@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic and Functions — Part III Unit 2</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        .tt-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 1.8rem; line-height: 1.8; margin: 8px 0; }
+        .tt-row select { max-width: 100%; }
+        .tt-ev { display: none; width: 100%; font-size: 1.6rem; color: rgba(255,255,255,.6); padding-left: 8px; }
+        .tt-ev.show { display: block; }
+        .fio { font-size: 2.1rem; line-height: 2; }
+        .fio select { font-size: 1.7rem; max-width: 100%; }
+        .fn-frames { font-size: 1.8rem; line-height: 1.9; color: #f0f0f0; margin-bottom: 10px; }
+        .fn-frames b { color: #ffd166; }
+        .fn-head { font-size: 2rem; font-weight: 700; color: #ffd166; margin: 18px 0 8px; }
+        .score-line { font-size: 2rem; font-weight: 700; margin-left: 12px; }
+        .qz { background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; }
+        .qz .qz-ja { font-size: 1.9rem; line-height: 1.7; margin-bottom: 8px; }
+        .qz .qz-hint { font-size: 1.6rem; color: rgba(255,255,255,.5); margin-bottom: 8px; }
+        .qz textarea { font-size: 2rem; }
+        .qz-fb { display: none; margin-top: 8px; font-size: 1.8rem; line-height: 1.8; }
+        .qz-fb.show { display: block; }
+        .qz-fb .m { color: #a5d6a7; } .qz-fb .x { color: #ef9a9a; text-decoration: underline wavy; }
+        .qz.pass { border-color: #66bb6a; }
+        .qz.fail { border-color: #ef5350; }
+        .pass-banner { display: none; font-size: 2.4rem; font-weight: 800; color: #a5d6a7; text-align: center; margin-top: 12px; }
+        .pass-banner.show { display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <div class="header-label">Genius 論理・表現 II &nbsp;·&nbsp; Part III Unit 2</div>
+        <div class="header-title">Logic and Structure &amp; Functions</div>
+        <div class="header-sub">Creating Something New in Empty Spaces — Presentation ①</div>
+    </div>
+
+    <div class="nav-row">
+        <a class="nav-link" href="index.html">① Model</a>
+        <a class="nav-link current" href="structure.html">② Logic &amp; Functions</a>
+        <a class="nav-link" href="listen.html">③ Put It Together</a>
+        <a class="nav-link" href="mypresentation.html">④ Try It Out</a>
+    </div>
+
+    <div class="warn" id="warn"></div>
+
+    <div class="card">
+        <div class="card-label">🧱 Logic and Structure</div>
+        <div class="note">
+            プレゼンテーションではスピーチと同じく <b>Introduction → Body → Conclusion</b> という流れを守り、
+            原稿は見ずに資料やスライドに聞き手の関心を引きつけながら、語りかけるように発表しましょう。
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">💡 p.79 Think It Through — Model の構成</div>
+        <div class="note">Fill in the blanks in the table below according to the model passage.<br>
+            Model（Nicole のプレゼン）の内容に合うように、( 1 )〜( 12 ) に入る語句を選びましょう。</div>
+        <div id="tt"></div>
+        <div class="center" style="margin-top:14px">
+            <button class="main-btn" id="tt-check">✔ 答え合わせ</button>
+            <button class="main-btn sub" id="tt-reset">リセット</button>
+            <span class="score-line" id="tt-score"></span>
+        </div>
+    </div>
+
+    <div class="card" style="padding:16px 20px;">
+        <div class="toolbar">
+            <div class="pill-group">
+                <button class="pill on" id="ja-btn">日本語訳 表示</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill on" id="vis-btn">👁 英文表示</button>
+            </div>
+            <div class="pill-group" id="speed-group">
+                <button class="pill" data-v="0.7">0.7×</button>
+                <button class="pill on" data-v="0.85">0.85×</button>
+                <button class="pill" data-v="1">1.0×</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">🗣 Functions — プレゼンで使える表現（暗唱用）</div>
+        <div id="functions"></div>
+        <p class="hint">▶ Play で音声を聴き、● Record で暗唱してから停止すると採点されます。「英文表示」を OFF にして暗唱にチャレンジしましょう。</p>
+    </div>
+
+    <div class="card">
+        <div class="card-label">★ Functions 3文 &lt;小テスト&gt; ★</div>
+        <div class="note">
+            日本語を見て、Functions の例文（太字の3文）を英語で書きましょう。<br>
+            <b>→ ノートに書いて練習すること！ → 全てノーミスで書けて合格！！</b><br>
+            <span style="opacity:.75">※ 大文字・小文字、カンマ、ピリオドまで正確に書きましょう（’ と ' の違いは区別しません）。</span>
+        </div>
+        <div id="quiz"></div>
+        <div class="center" style="margin-top:14px">
+            <button class="main-btn" id="quiz-check">✔ 採点</button>
+            <button class="main-btn sub" id="quiz-reset">リセット</button>
+            <span class="score-line" id="quiz-score"></span>
+        </div>
+        <div class="pass-banner" id="quiz-pass">🎉 合格！ 3文ともノーミスです！</div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">🧩 Figure It Out（宿題 — 教科書に直接記号を書いて OK）</div>
+        <div class="note">Complete the presentation below by using the phrases in the box.<br>
+            a. Let’s have a close look at &nbsp;/&nbsp; b. I have a firm belief that &nbsp;/&nbsp; c. I would like to focus on</div>
+        <div class="fio" id="fio"></div>
+        <div class="center" style="margin-top:14px">
+            <button class="main-btn" id="fio-check">✔ 答え合わせ</button>
+            <span class="score-line" id="fio-score"></span>
+        </div>
+        <div id="fio-practice" style="display:none;margin-top:18px">
+            <div class="cmp-label">完成したプレゼンで練習</div>
+            <div id="fio-list"></div>
+        </div>
+    </div>
+
+</div>
+<script src="common.js"></script>
+<script>
+// ---------- Think It Through ----------
+const TT_ANSWERS = [
+    'ホテル', '小学校', '創造的な活用',
+    '1915年', '入学者数の減少により閉校した', '黒板のあるホテルの部屋',
+    '映画館になった講堂', 'たくさんのレストラン', '集まる場所', '重要な一部',
+    '空き建物の問題', '地域をより良くすること'
+];
+const TT_EVIDENCE = [
+    '③ I stayed at a hotel, but it wasn’t an ordinary hotel.',
+    '④ It used to be an elementary school!',
+    '⑤ …my experience with that creative use of empty space.',
+    '⑥ This is an elementary school that was built in 1915.',
+    '⑦ Due to declining enrollment, it was closed in 1975.',
+    '⑨ The classrooms became hotel rooms with chalkboards.',
+    '⑪ …the auditorium, which became a movie theater where you can eat while watching a movie.',
+    '⑫ There are also many restaurants…',
+    '⑫ …and places for people in the neighborhood to gather.',
+    '⑬ So the building remains an important part of the community.',
+    '⑮ First, the problem of empty buildings is not unique to Japan.',
+    '⑯ …creative ways to use empty buildings to enhance the neighborhood.'
+];
+// Each line: [section, text with {n} blanks]
+const TT_LINES = [
+    ['Introduction', '・この夏，アメリカの（{1}）に滞在した。'],
+    ['Introduction', '・そのホテルはかつて（{2}）だった建物を改装したもの。'],
+    ['Introduction', '・空きスペースの（{3}）についての自身の体験を話したい。'],
+    ['Body', '（写真を提示しながら）'],
+    ['Body', '・ホテルはもともと（{4}）に建てられた小学校。'],
+    ['Body', '・1975年に（{5}）。ある兄弟がホテルに改装。'],
+    ['Body', '・教室は（{6}）になった。プールで泳ぐこともできる。'],
+    ['Body', '・私は（{7}）で食事をしながら映画を楽しんだ。'],
+    ['Body', '・他にも（{8}）や近所の人が（{9}）もあり，その地域にとって（{10}）であり続けている。'],
+    ['Conclusion', '・滞在体験が教えてくれた2つのこと。'],
+    ['Conclusion', '・（{11}）は日本固有ではない。'],
+    ['Conclusion', '・空いた建物を創造的に活用できれば（{12}）につながる。']
+];
+const SEC_CLS = { Introduction: 'sec-intro', Body: 'sec-body', Conclusion: 'sec-concl' };
+
+function shuffled(a) {
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+    return b;
+}
+
+function renderTT() {
+    const opts = shuffled(TT_ANSWERS);
+    const sel = n => `<select class="blank" data-n="${n}"><option value="">(${n}) を選択</option>${opts.map(o => `<option>${o}</option>`).join('')}</select>`;
+    let html = '', cur = null;
+    TT_LINES.forEach(([sec, text]) => {
+        if (sec !== cur) {
+            if (cur) html += '</div>';
+            html += `<div class="sec ${SEC_CLS[sec]}"><div class="sec-tag">${sec}</div>`;
+            cur = sec;
+        }
+        const nums = [...text.matchAll(/\{(\d+)\}/g)].map(m => +m[1]);
+        html += `<div class="tt-row"><span>${text.replace(/\{(\d+)\}/g, (_, n) => sel(+n))}</span>
+            ${nums.map(n => `<div class="tt-ev" id="ev-${n}">(${n}) 根拠：${escapeHtml(TT_EVIDENCE[n - 1])}</div>`).join('')}</div>`;
+    });
+    html += '</div>';
+    document.getElementById('tt').innerHTML = html;
+    document.getElementById('tt-score').textContent = '';
+}
+
+function checkTT() {
+    let ok = 0;
+    document.querySelectorAll('#tt select').forEach(s => {
+        const n = +s.dataset.n, right = s.value === TT_ANSWERS[n - 1];
+        if (right) ok++;
+        s.classList.toggle('ok', right); s.classList.toggle('ng', !right);
+        document.getElementById('ev-' + n).classList.add('show');
+    });
+    document.getElementById('tt-score').textContent = `${ok} / ${TT_ANSWERS.length} 正解` + (ok === TT_ANSWERS.length ? ' 🎉' : '');
+}
+
+// ---------- Functions ----------
+const FUNCTIONS = [
+    { head: '① 焦点を1つに絞る', frames: '<b>I would like to focus on ~.</b>（～に焦点を当てたいと思います）<br><b>The main point I’d like to make is ~.</b>（お伝えしたい最大のポイントは～）',
+      key: { en: 'I would like to focus on just one point in my presentation today.', ja: '本日のプレゼンテーションでは、1つのポイントにのみ焦点を当てたいと思います。' },
+      items: [
+        { en: 'I’d like to start my presentation by telling you about an experience I had this summer.', ja: '今年の夏に経験したことをお話しすることで、私のプレゼンテーションを始めたいと思います。', label: 'Model ① より（話題の導入）' },
+        { en: 'The main point I’d like to make is that empty buildings can be used creatively.', ja: 'お伝えしたい最大のポイントは、空き建物は創造的に活用できるということです。', label: '言いかえ練習' }
+      ] },
+    { head: '② 資料に注意を向ける', frames: '<b>I’d like to draw your attention to ~.</b>（～に注目していただきたいと思います）<br><b>Let’s now have a closer look at ~.</b>（さて今度は～をしっかりとご覧ください）',
+      key: { en: 'I’d like to draw your attention to the second column of this table.', ja: 'この表の2列目に注目していただきたいと思います。' },
+      items: [
+        { en: 'You can see from this picture that this street once had many stores.', ja: 'この写真から、この通りにはかつてたくさんの店があったことがわかります。', label: 'Put It Together（Haruto）より' },
+        { en: 'Let’s now have a closer look at the chart on the next slide.', ja: 'さて今度は、次のスライドのグラフをしっかりとご覧ください。', label: '言いかえ練習' }
+      ] },
+    { head: '③ 自分の考えを述べる', frames: '<b>I believe that ....</b>（私は…だと信じています）<br><b>I have a firm belief that ....</b>（私には…という強い信念があります）<br><b>I’m positive that ....</b>（私は…ということはまちがいないと思います）<br><b>In my opinion, ....</b>（私の意見では、…）',
+      key: { en: 'I have a firm belief that our plan will meet the needs.', ja: '私たちのプランはニーズを満たすものと強く信じています。' },
+      items: [
+        { en: 'I am certain you will enjoy a new experience as you help your community.', ja: '地域を助けながら、きっと新しい体験を楽しめると確信しています。', label: 'Put It Together（Haruto）より' },
+        { en: 'In my opinion, empty buildings can enhance the neighborhood.', ja: '私の意見では、空き建物は地域をより良くすることができます。', label: '言いかえ練習' }
+      ] }
+];
+
+let speed = 0.85;
+
+function renderFunctions() {
+    const box = document.getElementById('functions');
+    box.innerHTML = FUNCTIONS.map((f, i) => `
+        <div class="fn-head">${f.head}</div>
+        <div class="fn-frames">${f.frames}</div>
+        <div id="fn-${i}"></div>`).join('');
+    FUNCTIONS.forEach((f, i) => buildItemList(document.getElementById('fn-' + i),
+        [{ ...f.key, label: '★ 例文（小テスト対象）' }, ...f.items], () => speed, `f${i}-`));
+}
+
+// ---------- Functions 3文 小テスト ----------
+const QUIZ_KEY = 'genius3-2-quiz';
+let quizVals = store.get(QUIZ_KEY, ['', '', '']);
+const qnorm = s => s.replace(/[‘’ʼ]/g, "'").replace(/\s+/g, ' ').trim();
+
+function renderQuiz() {
+    document.getElementById('quiz').innerHTML = FUNCTIONS.map((f, i) => `
+        <div class="qz" id="qz-${i}">
+            <div class="item-num">${f.head}</div>
+            <div class="qz-ja">${escapeHtml(f.key.ja)}</div>
+            <div class="qz-hint">ヒント：${escapeHtml(f.key.en.split(' ').slice(0, 2).join(' '))} …（${f.key.en.split(' ').length} 語）</div>
+            <textarea class="field" rows="2" data-i="${i}" spellcheck="false" autocomplete="off">${escapeHtml(quizVals[i] || '')}</textarea>
+            <div class="qz-fb" id="qf-${i}"></div>
+        </div>`).join('');
+    document.getElementById('quiz-score').textContent = '';
+    document.getElementById('quiz-pass').classList.remove('show');
+}
+
+function checkQuiz() {
+    let ok = 0;
+    FUNCTIONS.forEach((f, i) => {
+        const ans = qnorm(f.key.en), mine = qnorm(quizVals[i] || '');
+        const pass = ans === mine;
+        if (pass) ok++;
+        const box = document.getElementById('qz-' + i);
+        box.classList.toggle('pass', pass); box.classList.toggle('fail', !pass);
+        const fb = document.getElementById('qf-' + i);
+        fb.classList.add('show');
+        if (pass) { fb.innerHTML = '<span class="m">✔ ノーミス！</span>'; return; }
+        const mw = mine.split(' ');
+        const words = ans.split(' ').map((w, k) => `<span class="${mw[k] === w ? 'm' : 'x'}">${escapeHtml(w)}</span>`).join(' ');
+        fb.innerHTML = `✘ 正解：${words}<br><span style="opacity:.6">下線の語（位置）を確認してもう一度書いてみましょう。</span>`;
+    });
+    document.getElementById('quiz-score').textContent = `${ok} / 3 ノーミス`;
+    document.getElementById('quiz-pass').classList.toggle('show', ok === 3);
+}
+
+// ---------- Figure It Out ----------
+const FIO_ANS = ['c', 'a', 'b'];
+let fioBuilt = false;
+const FIO_PHRASE = {
+    a: 'Let’s have a close look at', b: 'I have a firm belief that', c: 'I would like to focus on'
+};
+const FIO_TEXT = '{1} the community problems that vacant houses can lead to. {2} the first graph. It shows the results of the latest survey by the Ministry of Internal Affairs and Communications. You can see 13.6% of all housing units in Japan were empty as of the end of 2018. {3} the problems with vacant buildings should never be ignored by us.';
+
+function renderFIO() {
+    const sel = n => `<select class="blank" data-n="${n}"><option value="">(${n}) ___</option>
+        ${['a', 'b', 'c'].map(k => `<option value="${k}">${k}. ${FIO_PHRASE[k]}</option>`).join('')}</select>`;
+    document.getElementById('fio').innerHTML = FIO_TEXT.replace(/\{(\d)\}/g, (_, n) => sel(+n));
+}
+
+function checkFIO() {
+    let ok = 0;
+    document.querySelectorAll('#fio select').forEach(s => {
+        const right = s.value === FIO_ANS[+s.dataset.n - 1];
+        if (right) ok++;
+        s.classList.toggle('ok', right); s.classList.toggle('ng', !right);
+    });
+    document.getElementById('fio-score').textContent = `${ok} / 3 正解` + (ok === 3 ? ' 🎉' : '');
+    if (ok === 3 && !fioBuilt) {
+        fioBuilt = true;
+        const full = FIO_TEXT.replace(/\{(\d)\}/g, (_, n) => FIO_PHRASE[FIO_ANS[n - 1]]);
+        const parts = full.split(/(?<=[.?])\s+(?=[A-Z“])/);
+        const items = [
+            { en: parts[0], label: '焦点を1つに絞る' },
+            { en: parts.slice(1, -1).join(' '), label: '資料に注意を向ける → 資料の説明' },
+            { en: parts[parts.length - 1], label: '自分の考えを述べる' }
+        ];
+        buildItemList(document.getElementById('fio-list'), items, () => speed, 'fio-');
+        document.getElementById('fio-practice').style.display = 'block';
+        applyView();
+    }
+}
+
+// ---------- View toggles ----------
+let showJa = true, visible = true;
+function applyView() {
+    document.querySelectorAll('.item .ja').forEach(e => e.classList.toggle('lang-hidden', !showJa));
+    document.querySelectorAll('.item .en').forEach(e => e.classList.toggle('blurred', !visible));
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    renderTT(); renderFunctions(); renderQuiz(); renderFIO();
+    document.getElementById('tt-check').onclick = checkTT;
+    document.getElementById('tt-reset').onclick = renderTT;
+    document.getElementById('fio-check').onclick = checkFIO;
+    document.getElementById('quiz').addEventListener('input', e => {
+        if (!e.target.dataset.i) return;
+        quizVals[+e.target.dataset.i] = e.target.value; store.set(QUIZ_KEY, quizVals);
+    });
+    document.getElementById('quiz-check').onclick = checkQuiz;
+    document.getElementById('quiz-reset').onclick = () => { quizVals = ['', '', '']; store.set(QUIZ_KEY, quizVals); renderQuiz(); };
+    pillGroup('speed-group', v => { speed = parseFloat(v); });
+    document.getElementById('ja-btn').onclick = e => {
+        showJa = !showJa; e.target.classList.toggle('on', showJa);
+        e.target.textContent = showJa ? '日本語訳 表示' : '日本語訳 非表示';
+        applyView();
+    };
+    document.getElementById('vis-btn').onclick = e => {
+        visible = !visible; e.target.classList.toggle('on', visible);
+        e.target.textContent = visible ? '👁 英文表示' : '🙈 英文非表示';
+        applyView();
+    };
+    showWarnIfNoSR();
+});
+</script>
+</body>
+</html>

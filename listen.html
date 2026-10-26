@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Put It Together — Part III Unit 2</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        .speech-p { font-size: 2.2rem; line-height: 2.1; margin-bottom: 16px; }
+        .ck { border-radius: 4px; transition: background .2s; }
+        .ck.now { background: rgba(255,209,102,.28); }
+        .pm { color: #ff8a65; font-weight: 800; margin: 0 4px; display: none; }
+        .show-pauses .pm { display: inline; }
+        .show-stress .cw { font-weight: 800; color: #fff; text-decoration: underline; text-decoration-color: #ffd166; text-underline-offset: 5px; }
+        .show-stress .fw { color: rgba(255,255,255,.55); }
+        .sm { display: none; font-size: 1.5rem; font-weight: 800; color: #2a0f45; background: #81d4fa; border-radius: 14px; padding: 1px 10px; margin-right: 6px; vertical-align: middle; }
+        .show-slides .sm { display: inline-block; }
+        .free-out { margin-top: 10px; font-size: 1.8rem; line-height: 1.7; color: rgba(255,255,255,.8); }
+        .names input { width: 140px; }
+        .slides { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 10px; }
+        .slide { background: #fff; color: #222; border-radius: 10px; padding: 12px 14px; min-height: 150px; font-family: Arial, sans-serif; }
+        .slide.cur { outline: 4px solid #ffd166; }
+        .slide-id { font-weight: 800; font-size: 1.6rem; color: #6a2c91; }
+        .slide-title { font-weight: 700; font-size: 1.5rem; margin: 4px 0 8px; }
+        .slide-body { font-size: 1.3rem; line-height: 1.5; color: #444; }
+        .bars { display: flex; align-items: flex-end; gap: 14px; height: 70px; margin-top: 6px; }
+        .bar { width: 46px; background: #4a90d9; color: #fff; font-size: 1.1rem; text-align: center; border-radius: 3px 3px 0 0; }
+        .bar-l { font-size: 1.1rem; color: #555; text-align: center; width: 46px; }
+        .order-row { display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 1.9rem; margin-top: 14px; }
+        .score-line { font-size: 2rem; font-weight: 700; margin-left: 12px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <div class="header-label">Genius 論理・表現 II &nbsp;·&nbsp; Part III Unit 2</div>
+        <div class="header-title">Put It Together — Listen &amp; Recite</div>
+        <div class="header-sub">Haruto’s presentation on a social problem</div>
+    </div>
+
+    <div class="nav-row">
+        <a class="nav-link" href="index.html">① Model</a>
+        <a class="nav-link" href="structure.html">② Logic &amp; Functions</a>
+        <a class="nav-link current" href="listen.html">③ Put It Together</a>
+        <a class="nav-link" href="mypresentation.html">④ Try It Out</a>
+    </div>
+
+    <div class="warn" id="warn"></div>
+
+    <div class="card">
+        <div class="card-label">🎧 pp.80-81 Listen</div>
+        <div class="note">
+            Haruto is giving a presentation on a social problem. Listen to his presentation and follow the instructions below.<br>
+            1. 強く読まれている部分はどこでしょう？ それはどんな種類の語ですか。<br>
+            2. Haruto が<b>視覚資料（スライド）を見せている</b>と思われる部分はどこでしょう？<br>
+            ★ まず記号なしで聴き、予想してから「強勢」「スライド提示」「ポーズ記号」を ON にして確かめましょう。
+        </div>
+        <div class="toolbar" style="margin-bottom:10px">
+            <div class="pill-group" id="mode-group">
+                <button class="pill on" data-v="pause">⏸ ポーズを強調して再生</button>
+                <button class="pill" data-v="natural">▶ 自然に再生</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill" id="stress-btn">強勢 OFF</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill" id="slide-btn">📊 スライド提示 OFF</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill" id="pause-btn">/ // ポーズ記号 OFF</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill on" id="vis-btn">👁 テキスト表示</button>
+            </div>
+            <div class="pill-group" id="speed-group">
+                <button class="pill" data-v="0.75">0.75×</button>
+                <button class="pill on" data-v="0.9">0.9×</button>
+                <button class="pill" data-v="1">1.0×</button>
+            </div>
+        </div>
+        <div id="speech"></div>
+        <div class="note" id="stress-answer" style="display:none">
+            <b>強く読まれる語＝内容語</b>（名詞・動詞・形容詞・副詞・数字・疑問詞・否定語など、意味の中心となる語）。<br>
+            冠詞・前置詞・代名詞・助動詞・be動詞・接続詞などの<b>機能語</b>は弱く速く読まれます。<br>
+            <b>視覚資料を見せるタイミング</b>：this picture / this chart / when we look at ... など、資料を指す表現の直前・直後で提示します。<br>
+            <span style="opacity:.7">※ 表示している強勢・ポーズ・スライド位置は目安です。実際の音声もよく聴いて確かめましょう。</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">🖼 Recite — Arrange the slides in the correct order</div>
+        <div class="note">プレゼンの流れに合うように、スライド A〜D を正しい順に並べましょう。</div>
+        <div class="slides">
+            <div class="slide" id="slide-A">
+                <div class="slide-id">A.</div>
+                <div class="slide-title">Examples of Solutions</div>
+                <div class="slide-body">🎨 artwork on shutters<br>☕ cafe in a shopping street<br><span style="opacity:.6">（写真）</span></div>
+            </div>
+            <div class="slide" id="slide-B">
+                <div class="slide-id">B.</div>
+                <div class="slide-title">Average number and percentage of vacant stores per shopping street (Japan)</div>
+                <div class="bars"><div class="bar" style="height:37%">7.31%</div><div class="bar" style="height:70%">13.77%</div></div>
+                <div style="display:flex;gap:14px"><div class="bar-l">2003</div><div class="bar-l">2018</div></div>
+            </div>
+            <div class="slide" id="slide-C">
+                <div class="slide-id">C.</div>
+                <div class="slide-title">Number and percentage of vacant buildings (Japan)</div>
+                <div class="bars"><div class="bar" style="height:10%"></div><div class="bar" style="height:90%">8.5M</div></div>
+                <div style="display:flex;gap:14px"><div class="bar-l">1963<br>0.5M</div><div class="bar-l">2018</div></div>
+            </div>
+            <div class="slide" id="slide-D">
+                <div class="slide-id">D.</div>
+                <div class="slide-title">Shopping Street Now</div>
+                <div class="slide-body">🏚 shutters closed, a deserted street<br><span style="opacity:.6">（写真）</span></div>
+            </div>
+        </div>
+        <p class="hint" style="margin-top:6px">※ スライドは教科書 p.81 の図をもとに簡略化したものです。</p>
+        <div class="order-row" id="order-row"></div>
+        <div class="center" style="margin-top:12px">
+            <button class="main-btn" id="order-check">✔ 答え合わせ</button>
+            <span class="score-line" id="order-score"></span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">🎙 Recite — Practice the presentation</div>
+        <div class="player">
+            <canvas class="wave" id="waveform" width="700" height="56"></canvas>
+            <div class="btn-row">
+                <div class="btn-col">
+                    <span class="phase-badge phase-listen">① 聴く</span>
+                    <button class="action-btn btn-listen" id="listen-btn">
+                        <span class="btn-icon" id="listen-icon">▶</span>
+                        <span id="listen-label">音声を聴く</span>
+                    </button>
+                </div>
+                <div class="btn-col">
+                    <span class="phase-badge phase-shadow">② プレゼン録音</span>
+                    <button class="action-btn btn-shadow" id="rec-btn">
+                        <span class="btn-icon" id="rec-icon">🎙</span>
+                        <span id="rec-label">録音開始</span>
+                    </button>
+                </div>
+            </div>
+            <div class="pill-group">
+                <button class="pill" id="audio-btn">🔇 音声同時再生 OFF（発表モード）</button>
+            </div>
+            <p class="hint">
+                In pairs, practice the presentation using the slides above in turns. Remember how you heard it in Listen.<br>
+                再生中は、いま見せるべきスライドが黄色の枠で光ります。話し終えたら ⏹ で停止すると採点されます。<br>
+                「音声同時再生」を ON にするとシャドーイング練習になります（🎧 ヘッドフォン必須）。
+            </p>
+        </div>
+    </div>
+
+    <div id="result-holder"></div>
+
+    <div class="card">
+        <div class="card-label">✅ Check Points — パートナーのプレゼンをチェック</div>
+        <div class="note">ペアでプレゼンテーションしてみて、Check Points を確認しましょう。</div>
+        <div class="names" style="font-size:1.7rem;margin-bottom:10px">
+            Name 1: <input class="blank" id="name0" placeholder="名前"> &nbsp;
+            Name 2: <input class="blank" id="name1" placeholder="名前">
+        </div>
+        <table class="check" id="check-table"></table>
+        <div class="center" style="margin-top:14px">
+            <button class="main-btn sub" id="auto-fill">🎙 録音の自動推定を Name 1 に反映</button>
+            <button class="main-btn sub" id="check-clear">クリア</button>
+        </div>
+        <p class="hint" style="margin-top:8px">（入力内容はこのブラウザに保存されます）</p>
+    </div>
+
+    <div class="card">
+        <div class="card-label">💬 Q &amp; A — Haruto の問いに答えよう</div>
+        <div class="note">
+            Answer the question Haruto asked in his presentation. Share your answer with your partner.<br>
+            <b>What can be done to solve the problem of empty spaces?</b><br>
+            <span style="opacity:.75">Hints: I believe that ... / In my opinion, ... / For example, ... / I’m positive that ...</span>
+        </div>
+        <div id="qa"></div>
+        <div class="item">
+            <div class="item-num">🆓 自由応答 — 自分の答えを録音して確認</div>
+            <div class="item-actions">
+                <button class="mini-btn record" id="free-btn">● 録音</button>
+            </div>
+            <div class="free-out" id="free-out"></div>
+        </div>
+    </div>
+
+</div>
+<script src="common.js"></script>
+<script>
+// Haruto's presentation: " / " short pause, " // " long pause, "[X]" = show slide X here.
+const PARAS = [
+    'Do you enjoy shopping? // I am sure / that many of you do. // But today / I would like to share with you / a social problem that has occurred / which is directly related to our shopping habits. //',
+    '[D] You can see from this picture / that this street once had many stores. // However, / now it is deserted. // Why did this happen? // As more and more shopping malls are built, / people stop shopping / along local streets like this. // Here in Japan, / this problem of vacant buildings / is getting more serious / year by year. // Let me share with you / some specific data. // [C] The left axis on this chart / shows the number of vacant buildings. // The right axis shows / what percentage of all buildings were vacant. // You can see / that the number of vacant buildings / has gone up every year. // In 1963 / there were about half a million empty buildings in Japan, / but by 2018 / that number had increased / to about 8.5 million. // Can you imagine? // [B] And when we look at the average number of vacant stores / per shopping street, / you can see the same trend. // In just 15 years, / the percentage of vacant stores almost doubled / from 7.31% in 2003 / to 13.77% in 2018. // I am worried / that this problem will continue / far into our future. //',
+    'What can be done / to solve this social problem? // [A] Actually, / many cities are revitalizing shopping streets / with beautiful artwork and cafes. // So the next time you go shopping, / why not support these local businesses? // I am certain / you will enjoy a new experience / as you help your community. //'
+];
+const SLIDE_ORDER = ['D', 'C', 'B', 'A'];
+
+const FUNCTION_WORDS = new Set(('a an the i me my you your he him his she her it its we us our they them their ' +
+    'this that these those who whom whose which what when as if so but and or of to in on at for from with by up ' +
+    'about into like is am are was were be been being do does did have has had can could will would may might shall should must ' +
+    'there let per').split(' '));
+const STRESS_OVERRIDE = new Set(['why', 'what', 'now', 'however', 'not', 'more', 'actually', 'certain', 'sure', 'many', 'this']);
+
+// chunks: [{text, end: 'short'|'long', para, slide}]
+const CHUNKS = [];
+PARAS.forEach((p, pi) => {
+    const parts = p.split(/\s*(\/\/|\/)\s*/);
+    for (let i = 0; i < parts.length; i += 2) {
+        let t = parts[i].trim(), slide = null;
+        const m = t.match(/^\[([A-D])\]\s*/);
+        if (m) { slide = m[1]; t = t.slice(m[0].length); }
+        if (t) CHUNKS.push({ text: t, end: parts[i + 1] === '//' ? 'long' : 'short', para: pi, slide });
+    }
+});
+const FULL_TEXT = CHUNKS.map(c => c.text).join(' ');
+// slide visible at each chunk
+let _cur = null;
+const SLIDE_AT = CHUNKS.map(c => (_cur = c.slide || _cur));
+
+const st = { mode: 'pause', speed: 0.9, pauses: false, stress: false, slides: false, visible: true, withAudio: false, listening: false, recording: false };
+let player = null, rec = null, lastDelivery = null;
+
+function stressHtml(text) {
+    return text.split(' ').map(w => {
+        const core = w.toLowerCase().replace(/[^a-z0-9’']/g, '');
+        const content = STRESS_OVERRIDE.has(core) || !FUNCTION_WORDS.has(core);
+        return `<span class="${content ? 'cw' : 'fw'}">${escapeHtml(w)}</span>`;
+    }).join(' ');
+}
+
+function renderSpeech() {
+    const html = PARAS.map((_, pi) => `<p class="speech-p">` + CHUNKS.map((c, ci) => c.para !== pi ? '' :
+        (c.slide ? `<span class="sm">📊 Slide ${c.slide}</span>` : '') +
+        `<span class="ck" id="ck-${ci}">${stressHtml(c.text)}</span><span class="pm">${c.end === 'long' ? '//' : '/'}</span> `).join('') + '</p>').join('');
+    document.getElementById('speech').innerHTML = html;
+    applyView();
+}
+
+function applyView() {
+    const box = document.getElementById('speech');
+    box.classList.toggle('show-pauses', st.pauses);
+    box.classList.toggle('show-stress', st.stress);
+    box.classList.toggle('show-slides', st.slides);
+    box.classList.toggle('blurred', !st.visible);
+    document.getElementById('stress-answer').style.display = (st.pauses || st.stress || st.slides) ? 'block' : 'none';
+}
+
+function mark(ci) {
+    document.querySelectorAll('.ck.now').forEach(e => e.classList.remove('now'));
+    document.querySelectorAll('.slide.cur').forEach(e => e.classList.remove('cur'));
+    if (ci !== null && ci >= 0) {
+        const e = document.getElementById('ck-' + ci); if (e) e.classList.add('now');
+        if (SLIDE_AT[ci]) document.getElementById('slide-' + SLIDE_AT[ci]).classList.add('cur');
+    }
+}
+
+function buildPlayback() {
+    if (st.mode === 'pause') {
+        return CHUNKS.map((c, i) => {
+            const paraEnd = i === CHUNKS.length - 1 || CHUNKS[i + 1].para !== c.para;
+            return { text: c.text, pause: paraEnd ? 1400 : c.end === 'long' ? 800 : 280, ci: i };
+        });
+    }
+    // natural: one utterance per sentence, highlight first chunk of the sentence
+    const out = [];
+    let buf = [], start = 0;
+    CHUNKS.forEach((c, i) => {
+        if (!buf.length) start = i;
+        buf.push(c.text);
+        if (c.end === 'long') {
+            const paraEnd = i === CHUNKS.length - 1 || CHUNKS[i + 1].para !== c.para;
+            out.push({ text: buf.join(' '), pause: paraEnd ? 900 : 200, ci: start });
+            buf = [];
+        }
+    });
+    return out;
+}
+
+function setListenUI(on) {
+    st.listening = on;
+    document.getElementById('listen-btn').classList.toggle('playing', on);
+    document.getElementById('listen-icon').textContent = on ? '⏹' : '▶';
+    document.getElementById('listen-label').textContent = on ? '停止' : '音声を聴く';
+    if (!on) mark(null);
+}
+
+function play(onDone) {
+    const pb = buildPlayback();
+    setListenUI(true);
+    player = speakChunks(pb, st.speed, {
+        onchunk: i => mark(pb[i].ci),
+        onend: () => { setListenUI(false); onDone && onDone(); }
+    });
+}
+
+function toggleListen() {
+    if (st.recording) return;
+    if (st.listening) { player && player.cancel(); setListenUI(false); return; }
+    play();
+}
+
+async function toggleRec() {
+    if (st.recording) { stopRec(); return; }
+    player && player.cancel(); setListenUI(false);
+    if (!hasRecognition()) { alert('このブラウザは音声認識に対応していません。Chrome / Edge をご利用ください。'); return; }
+    rec = new Recorder({ canvas: document.getElementById('waveform') });
+    try { await rec.start(); } catch (_) { alert('マイクへのアクセスを許可してください。'); return; }
+    st.recording = true;
+    document.getElementById('r-section').classList.remove('show');
+    setRecUI(true);
+    if (st.withAudio) setTimeout(() => {
+        if (st.recording) play(() => setTimeout(() => { if (st.recording) stopRec(); }, 2500));
+    }, 700);
+}
+
+async function stopRec() {
+    st.recording = false;
+    player && player.cancel(); setListenUI(false);
+    setRecUI(false);
+    const out = await rec.stop();
+    const cmp = compare(FULL_TEXT, out.text);
+    lastDelivery = deliveryRatings(out, cmp);
+    renderResult('r-', cmp, out);
+}
+
+function setRecUI(on) {
+    document.getElementById('rec-btn').classList.toggle('recording', on);
+    document.getElementById('rec-icon').textContent = on ? '⏹' : '🎙';
+    document.getElementById('rec-label').textContent = on ? '停止' : '録音開始';
+}
+
+// ---------- Slide order ----------
+function renderOrder() {
+    const sel = i => `<select class="blank" data-i="${i}"><option value="">?</option>${['A', 'B', 'C', 'D'].map(k => `<option>${k}</option>`).join('')}</select>`;
+    document.getElementById('order-row').innerHTML = [0, 1, 2, 3].map(sel).join(' → ');
+}
+function checkOrder() {
+    let ok = 0;
+    document.querySelectorAll('#order-row select').forEach(s => {
+        const right = s.value === SLIDE_ORDER[+s.dataset.i];
+        if (right) ok++;
+        s.classList.toggle('ok', right); s.classList.toggle('ng', !right);
+    });
+    document.getElementById('order-score').textContent = ok === 4 ? '4 / 4 正解 🎉' : `${ok} / 4 正解（音声を聴いて確かめよう）`;
+}
+
+// ---------- Check Points ----------
+const CHECKS = [
+    ['Volume', '聴き取りやすい声の大きさだったか'],
+    ['Speed', '聴き取りやすいスピードだったか'],
+    ['Tone', '声の調子を効果的に変えることができたか'],
+    ['Fluency', 'よどみなく話せたか'],
+    ['Enthusiasm', '熱意を持って話すことができたか'],
+    ['Body Language', '自然なジェスチャーを交えることができたか'],
+    ['Visual Aids', '視覚資料を効果的に示すことができたか']
+];
+const CK_KEY = 'genius3-2-listen-check';
+let checkState = store.get(CK_KEY, { names: ['', ''], v: {} });
+
+function renderChecks() {
+    const abc = (r, c) => `<span class="abc">${['A', 'B', 'C'].map(g =>
+        `<button data-r="${r}" data-c="${c}" data-g="${g}" class="${checkState.v[r + '-' + c] === g ? 'on' : ''}">${g}</button>`).join('')}</span>`;
+    document.getElementById('check-table').innerHTML =
+        `<tr><th>Check Points</th><th>Name 1</th><th>Name 2</th></tr>` +
+        CHECKS.map((c, r) => `<tr><td>${c[0]}<br><small>${c[1]}</small></td><td>${abc(r, 0)}</td><td>${abc(r, 1)}</td></tr>`).join('');
+    document.getElementById('name0').value = checkState.names[0];
+    document.getElementById('name1').value = checkState.names[1];
+}
+
+function saveChecks() { store.set(CK_KEY, checkState); }
+
+// ---------- Q&A ----------
+const QA = [
+    { q: 'What can be done to solve the problem of empty spaces?', label: 'Q（Haruto の問い）' },
+    { q: 'I believe that empty stores can be renovated into places for people in the neighborhood to gather, such as cafes or community centers.', label: 'A1（解答例：交流の場に改装）' },
+    { q: 'In my opinion, we should support local businesses. For example, we can buy things at local stores instead of big shopping malls.', label: 'A2（解答例：地元のお店を応援）' },
+    { q: 'I’m positive that high school students can help. We can hold events or paint artwork on the shutters of empty stores.', label: 'A3（解答例：高校生にできること）' }
+];
+
+function renderQA() {
+    buildItemList(document.getElementById('qa'), QA.map(x => ({ en: x.q, label: x.label })), () => st.speed, 'qa-');
+}
+
+let freeRec = null;
+async function toggleFree() {
+    const b = document.getElementById('free-btn'), out = document.getElementById('free-out');
+    if (freeRec) {
+        const r = freeRec; freeRec = null;
+        b.classList.remove('recording'); b.textContent = '● 録音';
+        const res = await r.stop();
+        const n = tokenize(res.text).length;
+        out.innerHTML = res.text
+            ? `あなたの発話（${n} words）：<br>${escapeHtml(res.text)}<br><span style="opacity:.6">→ “I believe that …” “In my opinion, …” など、自分の考えを述べる表現を使えましたか？ 具体例を加えるとより説得力が増します。</span>`
+            : '<span style="color:#ff9800">音声が検出されませんでした。</span>';
+        return;
+    }
+    if (!hasRecognition()) { alert('このブラウザは音声認識に対応していません。'); return; }
+    speechSynthesis.cancel();
+    freeRec = new Recorder();
+    try { await freeRec.start(); } catch (_) { freeRec = null; alert('マイクへのアクセスを許可してください。'); return; }
+    b.classList.add('recording'); b.textContent = '■ 停止';
+    out.textContent = '録音中…';
+}
+
+function toggler(id, key, label) {
+    document.getElementById(id).onclick = e => {
+        st[key] = !st[key]; e.target.classList.toggle('on', st[key]);
+        e.target.textContent = `${label} ${st[key] ? 'ON' : 'OFF'}`;
+        applyView();
+    };
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    renderSpeech(); renderOrder();
+    document.getElementById('result-holder').innerHTML = resultBlockHtml('r-', '結果 — Recite',
+        '<div class="center" style="margin-top:20px"><button class="main-btn" onclick="window.scrollTo({top:0,behavior:\'smooth\'})">🔄 もう一度</button></div>');
+    renderChecks(); renderQA();
+
+    pillGroup('mode-group', v => { st.mode = v; });
+    pillGroup('speed-group', v => { st.speed = parseFloat(v); });
+    toggler('pause-btn', 'pauses', '/ // ポーズ記号');
+    toggler('stress-btn', 'stress', '強勢');
+    toggler('slide-btn', 'slides', '📊 スライド提示');
+    document.getElementById('vis-btn').onclick = e => {
+        st.visible = !st.visible; e.target.classList.toggle('on', st.visible);
+        e.target.textContent = st.visible ? '👁 テキスト表示' : '🙈 テキスト非表示';
+        applyView();
+    };
+    document.getElementById('audio-btn').onclick = e => {
+        st.withAudio = !st.withAudio; e.target.classList.toggle('on', st.withAudio);
+        e.target.textContent = st.withAudio ? '🔊 音声同時再生 ON（シャドーイング）' : '🔇 音声同時再生 OFF（発表モード）';
+    };
+    document.getElementById('listen-btn').onclick = toggleListen;
+    document.getElementById('rec-btn').onclick = toggleRec;
+    document.getElementById('free-btn').onclick = toggleFree;
+    document.getElementById('order-check').onclick = checkOrder;
+
+    document.getElementById('check-table').addEventListener('click', e => {
+        const b = e.target.closest('button[data-g]');
+        if (!b) return;
+        const k = b.dataset.r + '-' + b.dataset.c;
+        checkState.v[k] = checkState.v[k] === b.dataset.g ? undefined : b.dataset.g;
+        saveChecks(); renderChecks();
+    });
+    ['name0', 'name1'].forEach((id, i) => document.getElementById(id).addEventListener('input', e => {
+        checkState.names[i] = e.target.value; saveChecks();
+    }));
+    document.getElementById('auto-fill').onclick = () => {
+        if (!lastDelivery) { alert('先に Recite でプレゼンを録音してください。'); return; }
+        if (lastDelivery.speed !== '-') checkState.v['1-0'] = lastDelivery.speed;
+        checkState.v['0-0'] = lastDelivery.volume;
+        checkState.v['3-0'] = lastDelivery.fluency;
+        saveChecks(); renderChecks();
+    };
+    document.getElementById('check-clear').onclick = () => {
+        checkState = { names: ['', ''], v: {} }; saveChecks(); renderChecks();
+    };
+    showWarnIfNoSR();
+});
+</script>
+</body>
+</html>

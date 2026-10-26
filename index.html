@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius Presentation — Part III Unit 2</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        .s { transition: background .2s; border-radius: 4px; }
+        .s.now { background: rgba(255,209,102,.28); }
+        .sec.dim { opacity: .35; }
+        input.dict { width: 7.5em; font-size: 1.9rem; padding: 2px 8px; margin: 2px 0; text-align: center; }
+        .dict-ans { display: none; color: #a5d6a7; font-size: 1.5rem; margin-left: 2px; }
+        .dict-ans.show { display: inline; }
+        .score-line { font-size: 2rem; font-weight: 700; margin-left: 12px; }
+        #dict-bar { display: none; margin-top: 12px; }
+        #dict-bar.show { display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <div class="header-label">Genius 論理・表現 II &nbsp;·&nbsp; Part III Unit 2</div>
+        <div class="header-title">Model Presentation — Listening &amp; Shadowing</div>
+        <div class="header-sub">Creating Something New in Empty Spaces — Presentation ①</div>
+    </div>
+
+    <div class="nav-row">
+        <a class="nav-link current" href="index.html">① Model</a>
+        <a class="nav-link" href="structure.html">② Logic &amp; Functions</a>
+        <a class="nav-link" href="listen.html">③ Put It Together</a>
+        <a class="nav-link" href="mypresentation.html">④ Try It Out</a>
+    </div>
+
+    <div class="warn" id="warn"></div>
+
+    <div class="card">
+        <div class="card-label">🏃 Warm-up</div>
+        <div class="note">
+            <b>Have you seen any empty buildings recently?</b><br>
+            YES ▶ Where? &nbsp;/&nbsp; NO ▶ Do you know anything about <i>akiya</i>?<br>
+            <span style="opacity:.75">Hints: near school / neighborhood / home / store / increase of empty homes</span>
+        </div>
+        <div class="note" style="border-left-color:#81d4fa">
+            <b>プレゼン</b>の構成 —
+            <b>Introduction</b>：聴衆を話題に惹きつける概要 ／
+            <b>Body</b>：視覚資料を提示しながら、説明や感想を述べる ／
+            <b>Conclusion</b>：体験から学んだことを述べる
+        </div>
+    </div>
+
+    <div class="card" style="padding:16px 20px;">
+        <div class="toolbar">
+            <div class="pill-group" id="lang-group">
+                <button class="pill on" data-v="en">English</button>
+                <button class="pill" data-v="ja">日本語</button>
+                <button class="pill" data-v="both">両方</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill on" id="vis-btn">👁 テキスト表示</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill on" id="audio-btn">🔊 音声同時再生 ON</button>
+            </div>
+            <div class="pill-group" id="speed-group">
+                <button class="pill" data-v="0.75">0.75×</button>
+                <button class="pill on" data-v="0.9">0.9×</button>
+                <button class="pill" data-v="1">1.0×</button>
+            </div>
+        </div>
+        <div class="toolbar" style="margin-top:10px;">
+            <span style="font-size:1.7rem;color:rgba(255,255,255,.6)">練習範囲：</span>
+            <div class="pill-group" id="range-group">
+                <button class="pill on" data-v="all">全文</button>
+                <button class="pill" data-v="intro">Introduction</button>
+                <button class="pill" data-v="body">Body</button>
+                <button class="pill" data-v="concl">Conclusion</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill" id="dict-btn">✍️ ハンドアウト穴埋め OFF</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">📖 Model [Listening] — Nicole is making a presentation in an online conference.</div>
+        <div class="note" id="dict-note" style="display:none">
+            <b>ハンドアウトの Model [Listening]</b>：音声を聴いて（ ）に入る語を1語ずつ書きましょう（全20か所）。<br>
+            「① 音声を聴く」で何度でも聴けます。書けたら「答え合わせ」で確認しましょう。
+        </div>
+        <div id="speech"></div>
+        <div class="center" id="dict-bar">
+            <button class="main-btn" id="dict-check">✔ 答え合わせ</button>
+            <button class="main-btn sub" id="dict-show">答えを表示</button>
+            <button class="main-btn sub" id="dict-reset">リセット</button>
+            <span class="score-line" id="dict-score"></span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="player">
+            <canvas class="wave" id="waveform" width="700" height="56"></canvas>
+            <div class="btn-row">
+                <div class="btn-col">
+                    <span class="phase-badge phase-listen">① 聴く</span>
+                    <button class="action-btn btn-listen" id="listen-btn">
+                        <span class="btn-icon" id="listen-icon">▶</span>
+                        <span id="listen-label">音声を聴く</span>
+                    </button>
+                </div>
+                <div class="btn-col">
+                    <span class="phase-badge phase-shadow">② シャドーイング</span>
+                    <button class="action-btn btn-shadow" id="shadow-btn">
+                        <span class="btn-icon" id="shadow-icon">🎙</span>
+                        <span id="shadow-label">録音開始</span>
+                    </button>
+                </div>
+            </div>
+            <p class="hint">
+                ① でモデル音声を確認 → ② を押すと<b>音声が流れながら録音</b>が始まります。<br>
+                文と文・段落と段落の間には、プレゼンらしい「間（ポーズ）」が入ります。読み終わると自動で停止して採点されます。<br>
+                🎧 ヘッドフォン必須（スピーカーだとモデル音声をマイクが拾ってしまいます）<br>
+                「🔊 音声同時再生」をOFFにすると、音声なしの暗唱（プレゼン発表）モードになります。
+            </p>
+        </div>
+    </div>
+
+    <div id="result-holder"></div>
+
+    <div class="card">
+        <div class="card-label">💬 Q&amp;A — 聴衆との質疑応答</div>
+        <div class="note">プレゼンの後、聴衆（Audience）が Nicole に質問します。質問を聴き、Nicole になりきって答えを暗唱しましょう。<br>
+            <b>Thank you for your question.</b> で答え始めるのがポイントです。</div>
+        <div id="qa-list"></div>
+    </div>
+
+</div>
+<script src="common.js"></script>
+<script>
+// [word] marks a blank on the handout (Model [Listening]).
+const SECTIONS = [
+    { key: 'intro', cls: 'sec-intro', tag: 'Introduction', memo: '話すことの概要・聴衆を話題に惹きつける導入', s: [
+        ['I’d like to start my presentation by telling you about an experience I had this summer.', '今年の夏に経験したことをお話しすることで、私のプレゼンテーションを始めたいと思います。'],
+        ['I went to the US for a short visit.', '私は短期間アメリカを訪れました。'],
+        ['I stayed at a hotel, but it wasn’t an [ordinary] hotel.', 'ホテルに泊まったのですが、それは普通のホテルではありませんでした。'],
+        ['It [used] [to] [be] an elementary school!', 'そこはかつて小学校だったのです！'],
+        ['So today I’d like to tell you about my experience with that creative use of [empty] [space].', 'そこで今日は、その空きスペースの創造的な活用についての私の体験をお話ししたいと思います。']
+    ]},
+    { key: 'body', cls: 'sec-body', tag: 'Body', memo: '視覚資料を提示しながら、説明や感想を述べる', s: [
+        ['This is an elementary school that was built in 1915.', 'これは1915年に建てられた小学校です。'],
+        ['[Due] [to] declining enrollment, it was closed in 1975.', '入学者数の減少により、1975年に閉校しました。'],
+        ['However, two brothers decided to [renovate] the building and turn it into a hotel.', 'しかし、2人の兄弟がその建物を改装してホテルにすることを決めました。'],
+        ['The classrooms became hotel rooms with chalkboards.', '教室は黒板のあるホテルの部屋になりました。'],
+        ['You can swim in the outdoor pool.', '屋外プールで泳ぐこともできます。'],
+        ['I really enjoyed the auditorium, [which] became a movie theater [where] you can eat while watching a movie.', '私は講堂がとても気に入りました。そこは映画を見ながら食事ができる映画館になっていたのです。'],
+        ['There are also many restaurants and places [for] people in the neighborhood [to] gather.', 'ほかにも、たくさんのレストランや近所の人々が集まる場所があります。'],
+        ['So the building [remains] an important part of the community.', 'そのため、その建物は地域社会の重要な一部であり続けています。']
+    ]},
+    { key: 'concl', cls: 'sec-concl', tag: 'Conclusion', memo: '体験から学んだことを述べる', s: [
+        ['Staying at this hotel taught me two important things.', 'このホテルに泊まったことで、私は2つの大切なことを学びました。'],
+        ['First, the problem of empty buildings is [not] [unique] to Japan.', '1つ目は、空き建物の問題は日本に固有のものではないということです。'],
+        ['Second, I learned that there are creative ways to use empty buildings to [enhance] the neighborhood.', '2つ目は、空き建物を活用して地域をより良くする創造的な方法があるとわかったことです。'],
+        ['Now, I am [looking] [forward] [to] learning more about this topic and I hope you are too.', '今、私はこのテーマについてもっと学ぶことを楽しみにしています。皆さんもそうであることを願っています。']
+    ]}
+];
+
+const QA = [
+    { label: 'Audience（質問）', en: 'Thank you for your presentation. Can you give us an example of a creative use of space here in Japan?',
+      ja: 'プレゼンテーションをありがとうございました。ここ日本でのスペースの創造的な活用例を挙げてもらえますか。' },
+    { label: 'Nicole（応答）', en: 'Thank you for your question. Actually in my neighborhood there is a sento which was renovated into an art gallery and cafe. I thought that was very creative!',
+      ja: 'ご質問ありがとうございます。実は私の近所に、アートギャラリー兼カフェに改装された銭湯があります。とても創造的だと思いました！' }
+];
+
+const plain = t => t.replace(/\[([^\]]+)\]/g, '$1');
+const BLANKS = [];   // answers in order
+SECTIONS.forEach(sec => sec.s.forEach(x => { for (const m of x[0].matchAll(/\[([^\]]+)\]/g)) BLANKS.push(m[1]); }));
+
+const st = { lang: 'en', visible: true, speed: 0.9, withAudio: true, range: 'all', listening: false, shadowing: false, dict: false };
+let player = null, rec = null;
+let dictVals = store.get('genius3-2-dict', {});
+
+function sentenceHtml(text) {
+    if (!st.dict) return escapeHtml(plain(text));
+    return escapeHtml(text).replace(/\[([^\]]+)\]/g, () => {
+        const k = render.blank++;
+        return `<input class="blank dict" data-k="${k}" autocomplete="off" spellcheck="false" value="${escapeHtml(dictVals[k] || '')}"><span class="dict-ans" id="da-${k}">${escapeHtml(BLANKS[k])}</span>`;
+    });
+}
+
+function render() {
+    let n = 0;
+    render.blank = 0;
+    document.getElementById('speech').innerHTML = SECTIONS.map(sec => {
+        const en = sec.s.map(x => { n++; return `<span class="s" id="s-${n - 1}"><span class="sn">${n}</span>${sentenceHtml(x[0])}</span>`; }).join(' ');
+        const ja = sec.s.map(x => x[1]).join('');
+        return `<div class="sec ${sec.cls}" id="sec-${sec.key}">
+            <div class="sec-tag">${sec.tag}<small>${sec.memo}</small></div>
+            <div class="en para-en">${en}</div>
+            <div class="ja para-ja">${escapeHtml(ja)}</div></div>`;
+    }).join('');
+    document.getElementById('dict-score').textContent = '';
+    applyView();
+}
+
+function applyView() {
+    document.querySelectorAll('.para-en').forEach(e => {
+        e.classList.toggle('lang-hidden', st.lang === 'ja' && !st.dict);
+        e.classList.toggle('blurred', !st.visible && !st.dict);
+    });
+    document.querySelectorAll('.para-ja').forEach(e => {
+        e.classList.toggle('lang-hidden', st.lang === 'en' || st.dict);
+        e.classList.toggle('blurred', !st.visible);
+    });
+    document.querySelectorAll('.qa-en').forEach(e => e.classList.toggle('blurred', !st.visible));
+    document.querySelectorAll('.qa-ja').forEach(e => e.classList.toggle('lang-hidden', st.lang === 'en'));
+    SECTIONS.forEach(sec => document.getElementById('sec-' + sec.key)
+        .classList.toggle('dim', st.range !== 'all' && st.range !== sec.key));
+}
+
+// ---------- Handout dictation ----------
+const norm = w => w.trim().toLowerCase().replace(/[‘’]/g, "'").replace(/[^a-z']/g, '');
+function checkDict(reveal) {
+    let ok = 0;
+    document.querySelectorAll('input.dict').forEach(inp => {
+        const k = +inp.dataset.k, right = norm(inp.value) === norm(BLANKS[k]);
+        if (right) ok++;
+        inp.classList.toggle('ok', right); inp.classList.toggle('ng', !right);
+        document.getElementById('da-' + k).classList.toggle('show', reveal || !right);
+    });
+    document.getElementById('dict-score').textContent = `${ok} / ${BLANKS.length} 正解` + (ok === BLANKS.length ? ' 🎉' : '');
+}
+function setDict(on) {
+    st.dict = on;
+    const b = document.getElementById('dict-btn');
+    b.classList.toggle('on', on);
+    b.textContent = on ? '✍️ ハンドアウト穴埋め ON' : '✍️ ハンドアウト穴埋め OFF';
+    document.getElementById('dict-bar').classList.toggle('show', on);
+    document.getElementById('dict-note').style.display = on ? 'block' : 'none';
+    render();
+}
+
+// Sentences in the selected range, with global index and pause after each
+function targetChunks() {
+    const out = [];
+    let n = 0;
+    SECTIONS.forEach(sec => {
+        sec.s.forEach((x, k) => {
+            if (st.range === 'all' || st.range === sec.key) {
+                const lastInSec = k === sec.s.length - 1;
+                out.push({ text: plain(x[0]), idx: n, pause: lastInSec ? 1100 : 450 });
+            }
+            n++;
+        });
+    });
+    return out;
+}
+function targetText() { return targetChunks().map(c => c.text).join(' '); }
+
+function mark(idx) {
+    document.querySelectorAll('.s.now').forEach(e => e.classList.remove('now'));
+    if (idx !== null) {
+        const el = document.getElementById('s-' + idx);
+        if (el) el.classList.add('now');
+    }
+}
+
+function setListenUI(on) {
+    st.listening = on;
+    document.getElementById('listen-btn').classList.toggle('playing', on);
+    document.getElementById('listen-icon').textContent = on ? '⏹' : '▶';
+    document.getElementById('listen-label').textContent = on ? '停止' : '音声を聴く';
+    if (!on) mark(null);
+}
+
+function playModel(onDone) {
+    const chunks = targetChunks();
+    player = speakChunks(chunks, st.speed, {
+        onstart: () => document.getElementById('listen-btn').classList.add('playing'),
+        onchunk: i => mark(chunks[i].idx),
+        onend: () => { setListenUI(false); onDone && onDone(); }
+    });
+}
+
+function toggleListen() {
+    if (st.shadowing) return;
+    if (st.listening) { player && player.cancel(); setListenUI(false); return; }
+    if (!getVoice()) { showWarn('⚠️ 音声が見つかりません。Chrome / Edge をお使いください。'); return; }
+    setListenUI(true);
+    playModel();
+}
+
+async function toggleShadow() {
+    if (st.shadowing) { stopShadow(); return; }
+    player && player.cancel(); setListenUI(false);
+    if (!hasRecognition()) { showWarn('⚠️ 音声認識に非対応のブラウザです。Chrome / Edge をご利用ください。'); return; }
+    rec = new Recorder({ canvas: document.getElementById('waveform') });
+    try { await rec.start(); } catch (_) { alert('マイクへのアクセスを許可してください。'); return; }
+    st.shadowing = true;
+    document.getElementById('r-section').classList.remove('show');
+    setShadowUI(true);
+    if (st.withAudio) setTimeout(() => {
+        if (!st.shadowing) return;
+        playModel(() => setTimeout(() => { if (st.shadowing) stopShadow(); }, 2500));
+    }, 700);
+}
+
+async function stopShadow() {
+    st.shadowing = false;
+    player && player.cancel();
+    setListenUI(false);
+    setShadowUI(false);
+    const out = await rec.stop();
+    renderResult('r-', compare(targetText(), out.text), out);
+}
+
+function setShadowUI(on) {
+    document.getElementById('shadow-btn').classList.toggle('recording', on);
+    document.getElementById('shadow-icon').textContent = on ? '⏹' : '🎙';
+    document.getElementById('shadow-label').textContent = on ? '停止' : '録音開始';
+}
+
+function showWarn(msg) {
+    const el = document.getElementById('warn');
+    el.textContent = msg; el.style.display = 'block';
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    render();
+    document.getElementById('result-holder').innerHTML = resultBlockHtml('r-', '結果',
+        '<div class="center" style="margin-top:20px"><button class="main-btn" onclick="resetAll()">🔄 もう一度</button></div>');
+    buildItemList(document.getElementById('qa-list'),
+        QA.map(q => ({ ...q, html: `<span class="qa-en">${escapeHtml(q.en)}</span>` })), () => st.speed, 'qa-');
+    document.querySelectorAll('#qa-list .ja').forEach(e => e.classList.add('qa-ja'));
+
+    pillGroup('lang-group', v => { st.lang = v; applyView(); });
+    pillGroup('speed-group', v => { st.speed = parseFloat(v); });
+    pillGroup('range-group', v => { st.range = v; applyView(); });
+    document.getElementById('vis-btn').onclick = e => {
+        st.visible = !st.visible;
+        e.target.classList.toggle('on', st.visible);
+        e.target.textContent = st.visible ? '👁 テキスト表示' : '🙈 テキスト非表示';
+        applyView();
+    };
+    document.getElementById('audio-btn').onclick = e => {
+        st.withAudio = !st.withAudio;
+        e.target.classList.toggle('on', st.withAudio);
+        e.target.textContent = st.withAudio ? '🔊 音声同時再生 ON' : '🔇 音声同時再生 OFF';
+    };
+    document.getElementById('dict-btn').onclick = () => setDict(!st.dict);
+    document.getElementById('speech').addEventListener('input', e => {
+        if (!e.target.classList.contains('dict')) return;
+        dictVals[e.target.dataset.k] = e.target.value;
+        e.target.classList.remove('ok', 'ng');
+        store.set('genius3-2-dict', dictVals);
+    });
+    document.getElementById('dict-check').onclick = () => checkDict(false);
+    document.getElementById('dict-show').onclick = () => checkDict(true);
+    document.getElementById('dict-reset').onclick = () => {
+        dictVals = {}; store.set('genius3-2-dict', dictVals); render();
+    };
+    document.getElementById('listen-btn').onclick = toggleListen;
+    document.getElementById('shadow-btn').onclick = toggleShadow;
+    applyView();
+    showWarnIfNoSR();
+});
+
+function resetAll() {
+    speechSynthesis.cancel();
+    document.getElementById('r-section').classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

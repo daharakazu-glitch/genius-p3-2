@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try It Out — Part III Unit 2</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        .step { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+        .step span { display: inline-block; background: #ffd166; color: #2a0f45; border-radius: 8px; padding: 2px 10px; margin-right: 8px; font-size: 1.6rem; }
+        .lbl { font-size: 1.7rem; color: #ffd166; margin: 12px 0 6px; }
+        .lbl small { color: rgba(255,255,255,.55); margin-left: 6px; }
+        .topics label { display: block; font-size: 1.9rem; margin: 6px 0; cursor: pointer; }
+        .topics input[type=radio] { transform: scale(1.4); margin-right: 10px; }
+        .wc-bar { height: 12px; background: rgba(0,0,0,.3); border-radius: 6px; overflow: hidden; margin-top: 8px; }
+        .wc-fill { height: 100%; width: 0; background: linear-gradient(90deg, #ff9f1c, #ffd166); transition: width .3s; }
+        .wc-fill.done { background: linear-gradient(90deg, #43a047, #a5d6a7); }
+        .wc-text { font-size: 1.7rem; margin-top: 6px; }
+        .fx { font-size: 1.7rem; line-height: 1.9; }
+        .fx .y { color: #a5d6a7; } .fx .n { color: rgba(255,255,255,.45); }
+        .chk label { display: block; font-size: 1.8rem; margin: 6px 0; cursor: pointer; }
+        .chk input { transform: scale(1.4); margin-right: 10px; }
+        .script-view { font-size: 2.1rem; line-height: 2; }
+        .script-view .s.now { background: rgba(255,209,102,.28); border-radius: 4px; }
+        .saved { font-size: 1.5rem; color: rgba(255,255,255,.45); text-align: right; }
+        .slide-grid { display: grid; grid-template-columns: 2.2em 1fr; gap: 6px 10px; align-items: center; font-size: 1.8rem; }
+        .slide-grid input { width: 100%; }
+        .tips { font-size: 1.6rem; color: rgba(255,255,255,.6); line-height: 1.7; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <div class="header-label">Genius 論理・表現 II &nbsp;·&nbsp; Part III Unit 2</div>
+        <div class="header-title">Try It Out — Make Your Presentation</div>
+        <div class="header-sub">You are going to join a conference.</div>
+    </div>
+
+    <div class="nav-row">
+        <a class="nav-link" href="index.html">① Model</a>
+        <a class="nav-link" href="structure.html">② Logic &amp; Functions</a>
+        <a class="nav-link" href="listen.html">③ Put It Together</a>
+        <a class="nav-link current" href="mypresentation.html">④ Try It Out</a>
+    </div>
+
+    <div class="warn" id="warn"></div>
+
+    <div class="card">
+        <div class="card-label">🎯 Topic</div>
+        <div class="note">Choose one of the topics below and give a presentation.</div>
+        <div class="topics" id="topics">
+            <label><input type="radio" name="topic" value="Renovating vacant buildings."> Renovating vacant buildings.</label>
+            <label><input type="radio" name="topic" value="Promoting local businesses."> Promoting local businesses.</label>
+            <label><input type="radio" name="topic" value="other"> その他：<input class="blank" id="topic-other" style="width:60%" placeholder="自分でトピックを書く"></label>
+            <div class="lbl">Further Activity <small>別のトピックでも挑戦しよう</small></div>
+            <label><input type="radio" name="topic" value="An article that I want to share."> a. An article that I want to share.</label>
+            <label><input type="radio" name="topic" value="Good ways to reduce food waste."> b. Good ways to reduce food waste.</label>
+            <label><input type="radio" name="topic" value="Renovating school rules in our school."> c. Renovating school rules in our school.</label>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="step"><span>Step 1</span>構想メモ — Organize your ideas.</div>
+        <div class="note">What would you like to talk about in your presentation? Think of some ideas you want to share.<br>
+            Write down keywords that will make your presentation more attractive.</div>
+        <div class="sec sec-intro"><div class="sec-tag">① 導入<small>取り上げる topic を決める（空き家の活用方法・地域の活性化 など）</small></div>
+            <textarea class="field" rows="2" data-k="b1"></textarea></div>
+        <div class="sec sec-body"><div class="sec-tag">② 本論<small>具体的なアイディア・具体例（自治体の取り組み例・私のアイディア・高校生ができること）</small></div>
+            <textarea class="field" rows="3" data-k="b2"></textarea></div>
+        <div class="sec sec-concl"><div class="sec-tag">③ 結論<small>そのアイディアから得られる影響や効果、まとめ</small></div>
+            <textarea class="field" rows="2" data-k="b3"></textarea></div>
+        <p class="tips">★ メモの観点：いつ・どこで・誰が／何を・どのように／目的・影響 など</p>
+    </div>
+
+    <div class="card">
+        <div class="step"><span>Step 2</span>Make an outline.</div>
+        <div class="note">Decide on your message. Fill in the outline for the presentation and slides.<br>
+            Organize your ideas into at least 3 paragraphs. Plan the slides to show, including pictures and graphs.</div>
+        <div class="sec sec-intro"><div class="sec-tag">Introduction<small>聴衆を話題に惹きつける工夫</small></div>
+            <textarea class="field" rows="2" data-k="o1"></textarea></div>
+        <div class="sec sec-body"><div class="sec-tag">Body<small>具体例をあげながら説明</small></div>
+            <textarea class="field" rows="3" data-k="o2"></textarea></div>
+        <div class="sec sec-concl"><div class="sec-tag">Conclusion<small>伝えたい内容をまとめる</small></div>
+            <textarea class="field" rows="2" data-k="o3"></textarea></div>
+        <div class="lbl">Slides <small>6枚程度（1スライドにつき1トピック・文字情報は少なめに・写真やグラフを効果的に）</small></div>
+        <div class="slide-grid" id="slides"></div>
+    </div>
+
+    <div class="card">
+        <div class="step"><span>Step 3</span>Write it down.</div>
+        <div class="note">Write the script for your presentation. <b>Write at least 200 words.</b><br>
+            ※ <b>3パラ構成</b>の美しい段落のフォーマットで書く！ 段落は空行で区切りましょう（Introduction / Body / Conclusion）。</div>
+        <textarea class="field" rows="12" data-k="script" id="script" placeholder="I'd like to start my presentation by ..."></textarea>
+        <div class="wc-bar"><div class="wc-fill" id="wc-fill"></div></div>
+        <div class="wc-text" id="wc-text">0 / 200 words</div>
+        <div class="lbl">Functions チェック<small>プレゼンの表現を使えているか自動で確認します</small></div>
+        <div class="fx" id="fx"></div>
+        <div class="center" style="margin-top:12px">
+            <button class="main-btn sub" id="copy-btn">📋 原稿をコピー</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="step"><span>Step 4</span>Practice your presentation.</div>
+        <div class="toolbar" style="margin-bottom:12px">
+            <div class="pill-group" id="src-group">
+                <button class="pill on" data-v="script">Step 3 原稿</button>
+                <button class="pill" data-v="rewrite">Rewrite 原稿</button>
+            </div>
+            <div class="pill-group">
+                <button class="pill on" id="vis-btn">👁 原稿表示</button>
+            </div>
+            <div class="pill-group" id="speed-group">
+                <button class="pill" data-v="0.75">0.75×</button>
+                <button class="pill on" data-v="0.9">0.9×</button>
+                <button class="pill" data-v="1">1.0×</button>
+            </div>
+        </div>
+        <div class="script-view" id="script-view"></div>
+        <div class="player" style="margin-top:14px">
+            <canvas class="wave" id="waveform" width="700" height="56"></canvas>
+            <div class="btn-row">
+                <div class="btn-col">
+                    <span class="phase-badge phase-listen">① 原稿を聴く</span>
+                    <button class="action-btn btn-listen" id="listen-btn">
+                        <span class="btn-icon" id="listen-icon">▶</span>
+                        <span id="listen-label">音声を聴く</span>
+                    </button>
+                </div>
+                <div class="btn-col">
+                    <span class="phase-badge phase-shadow">② プレゼン録音</span>
+                    <button class="action-btn btn-shadow" id="rec-btn">
+                        <span class="btn-icon" id="rec-icon">🎙</span>
+                        <span id="rec-label">録音開始</span>
+                    </button>
+                </div>
+            </div>
+            <p class="hint">自分の原稿を音声で確認 → 原稿を見ずにスライドを指しながら発表してみましょう。停止すると、原稿との一致率・速さ・声量・流暢さを表示します。</p>
+        </div>
+    </div>
+
+    <div id="result-holder"></div>
+
+    <div class="card">
+        <div class="step"><span>Step 4</span>Check Points</div>
+        <div class="note">In pairs, check the following points and take notes. After your partner’s presentation, ask some questions and give some suggestions.</div>
+        <div class="chk" id="chk"></div>
+        <div class="lbl">Comments — 質問したいこと</div>
+        <textarea class="field" rows="2" data-k="cq"></textarea>
+        <div class="lbl">Comments — 気づいたこと</div>
+        <textarea class="field" rows="2" data-k="comments"></textarea>
+    </div>
+
+    <div class="card">
+        <div class="step"><span>Step 5</span>Improve your presentation. — Rewrite</div>
+        <div class="note">Based on your partner’s suggestions, improve your presentation. 原稿を書き直しましょう（Step 4 で「Rewrite 原稿」を選ぶと練習できます）。</div>
+        <div class="center" style="margin-bottom:10px"><button class="main-btn sub" id="copy-to-rewrite">⬇ Step 3 の原稿をコピーして書き直す</button></div>
+        <textarea class="field" rows="12" data-k="rewrite" id="rewrite"></textarea>
+        <div class="wc-text" id="rw-text">0 words</div>
+    </div>
+
+    <div class="card">
+        <div class="step"><span>Step 6–7</span>Give your presentation &amp; Q&amp;A</div>
+        <div class="note">While your classmates are giving their presentations, take notes. Ask questions after their presentations.<br>
+            質問の観点：理由・方法を聞く／さらに詳しい説明を求める</div>
+        <textarea class="field" rows="4" data-k="q"></textarea>
+    </div>
+
+    <div class="card">
+        <div class="card-label">📝 Were you able to:</div>
+        <table class="check" id="self-table"></table>
+        <p class="saved" id="saved">入力内容はこのブラウザに自動保存されます。</p>
+        <div class="center" style="margin-top:10px"><button class="main-btn sub" id="clear-btn">🗑 すべての入力を消去</button></div>
+    </div>
+
+</div>
+<script src="common.js"></script>
+<script>
+const KEY = 'genius3-2-mypresentation';
+let data = store.get(KEY, {});
+let speed = 0.9, visible = true, src = 'script', player = null, rec = null, recording = false, listening = false;
+
+const CHECK_POINTS = [
+    '導入で聴衆を惹きつける工夫をしている',
+    '具体例をあげながら説明している',
+    '伝えたい内容をまとめている',
+    '発音やイントネーションに気をつけている',
+    '熱意を持ってメッセージを伝えている',
+    '視覚資料を効果的に用いている'
+];
+const SELF = [
+    'make a presentation on creative ways to use empty spaces?',
+    'make the presentation in a compelling manner?',
+    'review and improve your presentation?'
+];
+const FX = [
+    ['話題を切り出す', /\b(i would like to (start|share|tell|talk)|i'd like to (start|share|tell|talk)|today i)/i],
+    ['焦点を1つに絞る', /\b(i would like to focus on|i'd like to focus on|the main point i'?d like to make)/i],
+    ['資料に注意を向ける', /\b(draw your attention to|have a closer? look at|you can see (from )?this|this (picture|chart|graph|table|slide))/i],
+    ['自分の考えを述べる', /\b(i believe that|i have a firm belief|i'?m positive that|in my opinion|i am certain)/i],
+    ['聴衆への問いかけ', /\?/]
+];
+
+function save() {
+    data.saved = new Date().toLocaleString('ja-JP');
+    store.set(KEY, data);
+    document.getElementById('saved').textContent = `自動保存しました（${data.saved}）`;
+}
+
+function scriptText(k) { return (data[k || src] || '').replace(/[’]/g, "'"); }
+function sentences(k) {
+    return scriptText(k).split(/\n\s*\n/).map(p => p.replace(/\s+/g, ' ').trim()).filter(Boolean)
+        .map(p => p.match(/[^.!?]+[.!?]+["”]?|[^.!?]+$/g).map(s => s.trim()).filter(Boolean));
+}
+
+function updateScript() {
+    const n = tokenize(data.script || '').length;
+    const fill = document.getElementById('wc-fill');
+    fill.style.width = Math.min(100, n / 2) + '%';
+    fill.classList.toggle('done', n >= 200);
+    document.getElementById('wc-text').textContent = `${n} / 200 words` + (n >= 200 ? ' ✔ クリア！' : `（あと ${200 - n} words）`);
+    const paras = sentences('script').length;
+    const t = scriptText('script');
+    document.getElementById('fx').innerHTML = FX.map(([name, re]) =>
+        re.test(t) ? `<div class="y">✔ ${name}</div>` : `<div class="n">□ ${name}</div>`).join('') +
+        (paras >= 3 ? `<div class="y">✔ 3段落以上で構成されている（${paras} 段落）</div>` : `<div class="n">□ 3段落以上で構成（現在 ${paras} 段落）</div>`);
+    document.getElementById('rw-text').textContent = `${tokenize(data.rewrite || '').length} words`;
+    renderScriptView();
+}
+
+function renderScriptView() {
+    let k = 0;
+    const html = sentences().map(p => '<p style="margin-bottom:12px">' +
+        p.map(s => `<span class="s" id="ss-${k++}">${escapeHtml(s)}</span>`).join(' ') + '</p>').join('');
+    const v = document.getElementById('script-view');
+    v.innerHTML = html || `<span style="opacity:.4">${src === 'script' ? 'Step 3' : 'Step 5（Rewrite）'} で原稿を書くと、ここに表示されます。</span>`;
+    v.classList.toggle('blurred', !visible);
+}
+
+function mark(i) {
+    document.querySelectorAll('#script-view .s.now').forEach(e => e.classList.remove('now'));
+    if (i !== null) { const e = document.getElementById('ss-' + i); if (e) e.classList.add('now'); }
+}
+
+function setListenUI(on) {
+    listening = on;
+    document.getElementById('listen-btn').classList.toggle('playing', on);
+    document.getElementById('listen-icon').textContent = on ? '⏹' : '▶';
+    document.getElementById('listen-label').textContent = on ? '停止' : '音声を聴く';
+    if (!on) mark(null);
+}
+
+function toggleListen() {
+    if (recording) return;
+    if (listening) { player && player.cancel(); setListenUI(false); return; }
+    const paras = sentences();
+    if (!paras.length) { alert('先に原稿を書いてください。'); return; }
+    const chunks = [];
+    paras.forEach(p => p.forEach((s, j) => chunks.push({ text: s, pause: j === p.length - 1 ? 1100 : 450 })));
+    setListenUI(true);
+    player = speakChunks(chunks, speed, { onchunk: i => mark(i), onend: () => setListenUI(false) });
+}
+
+async function toggleRec() {
+    if (recording) {
+        recording = false; setRecUI(false);
+        const out = await rec.stop();
+        renderResult('r-', compare(scriptText(), out.text), out);
+        return;
+    }
+    if (!scriptText().trim()) { alert('先に原稿を書いてください。'); return; }
+    if (!hasRecognition()) { alert('このブラウザは音声認識に対応していません。Chrome / Edge をご利用ください。'); return; }
+    player && player.cancel(); setListenUI(false);
+    rec = new Recorder({ canvas: document.getElementById('waveform') });
+    try { await rec.start(); } catch (_) { alert('マイクへのアクセスを許可してください。'); return; }
+    recording = true; setRecUI(true);
+    document.getElementById('r-section').classList.remove('show');
+}
+
+function setRecUI(on) {
+    document.getElementById('rec-btn').classList.toggle('recording', on);
+    document.getElementById('rec-icon').textContent = on ? '⏹' : '🎙';
+    document.getElementById('rec-label').textContent = on ? '停止' : '録音開始';
+}
+
+function renderSlides() {
+    const s = data.slides || [];
+    document.getElementById('slides').innerHTML = ['①', '②', '③', '④', '⑤', '⑥'].map((m, i) =>
+        `<span>${m}</span><input class="blank" data-i="${i}" value="${escapeHtml(s[i] || '')}" placeholder="${
+            ['Introduction：例）空き家の写真', 'Body：例）空き家数のグラフ', 'Body：例）自治体の取り組み', 'Body：例）私のアイディア', 'Body：例）高校生ができること', 'Conclusion：例）期待される効果・まとめ'][i]}">`).join('');
+}
+
+function renderChecks() {
+    const c = data.checks || [];
+    document.getElementById('chk').innerHTML = CHECK_POINTS.map((p, i) =>
+        `<label><input type="checkbox" data-i="${i}" ${c[i] ? 'checked' : ''}> ${p}</label>`).join('');
+    const s = data.self || {};
+    document.getElementById('self-table').innerHTML = SELF.map((q, i) => `<tr><td>${q}</td><td><span class="abc">${
+        ['A', 'B', 'C'].map(g => `<button data-i="${i}" data-g="${g}" class="${s[i] === g ? 'on' : ''}">${g}</button>`).join('')}</span></td></tr>`).join('');
+}
+
+function restore() {
+    document.querySelectorAll('textarea[data-k]').forEach(t => { t.value = data[t.dataset.k] || ''; });
+    const topic = data.topic;
+    if (topic) {
+        const r = document.querySelector(`input[name=topic][value="${CSS.escape(topic)}"]`);
+        if (r) r.checked = true;
+    }
+    document.getElementById('topic-other').value = data.topicOther || '';
+    renderSlides(); renderChecks(); updateScript();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('result-holder').innerHTML = resultBlockHtml('r-', '結果 — My Presentation');
+    restore();
+
+    document.querySelectorAll('textarea[data-k]').forEach(t => t.addEventListener('input', () => {
+        data[t.dataset.k] = t.value; save();
+        if (t.dataset.k === 'script' || t.dataset.k === 'rewrite') updateScript();
+    }));
+    document.getElementById('slides').addEventListener('input', e => {
+        data.slides = data.slides || [];
+        data.slides[+e.target.dataset.i] = e.target.value; save();
+    });
+    document.getElementById('topics').addEventListener('change', e => {
+        if (e.target.name === 'topic') { data.topic = e.target.value; save(); }
+    });
+    document.getElementById('topic-other').addEventListener('input', e => {
+        data.topicOther = e.target.value; data.topic = 'other';
+        document.querySelector('input[name=topic][value=other]').checked = true; save();
+    });
+    document.getElementById('chk').addEventListener('change', e => {
+        data.checks = data.checks || [];
+        data.checks[+e.target.dataset.i] = e.target.checked; save();
+    });
+    document.getElementById('self-table').addEventListener('click', e => {
+        const b = e.target.closest('button[data-g]');
+        if (!b) return;
+        data.self = data.self || {};
+        data.self[b.dataset.i] = data.self[b.dataset.i] === b.dataset.g ? undefined : b.dataset.g;
+        save(); renderChecks();
+    });
+    document.getElementById('copy-btn').onclick = () => {
+        const t = data.script || '';
+        (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject())
+            .then(() => alert('原稿をコピーしました。'))
+            .catch(() => { const ta = document.getElementById('script'); ta.select(); document.execCommand('copy'); alert('原稿をコピーしました。'); });
+    };
+    document.getElementById('copy-to-rewrite').onclick = () => {
+        if ((data.rewrite || '').trim() && !confirm('Rewrite 欄の内容を Step 3 の原稿で上書きします。よろしいですか？')) return;
+        data.rewrite = data.script || '';
+        document.getElementById('rewrite').value = data.rewrite;
+        save(); updateScript();
+    };
+    document.getElementById('clear-btn').onclick = () => {
+        if (!confirm('すべての入力内容を消去します。よろしいですか？')) return;
+        data = {}; store.set(KEY, data); restore();
+        document.querySelectorAll('input[name=topic]').forEach(r => { r.checked = false; });
+    };
+    pillGroup('src-group', v => { src = v; renderScriptView(); });
+    pillGroup('speed-group', v => { speed = parseFloat(v); });
+    document.getElementById('vis-btn').onclick = e => {
+        visible = !visible; e.target.classList.toggle('on', visible);
+        e.target.textContent = visible ? '👁 原稿表示' : '🙈 原稿非表示';
+        renderScriptView();
+    };
+    document.getElementById('listen-btn').onclick = toggleListen;
+    document.getElementById('rec-btn').onclick = toggleRec;
+    showWarnIfNoSR();
+});
+</script>
+</body>
+</html>
